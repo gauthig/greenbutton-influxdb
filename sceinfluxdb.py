@@ -19,7 +19,8 @@ __status__ = "Production"
 __status__ = "Production"
 
 from influxdb import InfluxDBClient
-import sys, csv, datetime, time
+from pytz import timezone
+import sys, csv, datetime, time, argparse, gzip
 
 prevarg = ''
 influx_url = ''
@@ -30,20 +31,8 @@ verbose = 'false'
 silent_run = 'false'
 writer = ''
 
-def help_text():
-    print ('\nUsage:\n')
-    print ('sceinfluxdb.py -i inputfile -u http://influxdb.mydomain.com')
-    print ('          or ')
-    print ('python3 sceinfluxdb.py -i inputfile -u http://influxdb.mydomain.com:8086\n')  
-    print ('\nBoth input file and URL are requried unless running a dry run\n')      
-    print ('Options:')
-    print (' -s    Silent - no outputdurring or after valid run')
-    print (' -v    Verbose - all parsed data will be sent to standard output')
-    print (' -d    Dry Run - parsed records will be sent to a file and not influxdb')
-    print ('                 you do nto have to provide -i if -d is used\n')
-    return()
 
-def parseData(input_file, writer):
+def parseData(input_file, writer, csvout):
     datapoints = []
     rows_generated = 0
     rows_delivered = 0
@@ -67,7 +56,7 @@ def parseData(input_file, writer):
                     rows_generated = rows_generated + 1
                 elif tag == 'delivered':
                     rows_delivered = rows_delivered +1
-                if dry_run == 'true' :
+                if csvout :
                     writer.writerow([times[1].strip(),row[1], tag])
                 if verbose == 'true' :
                     print([times[1].strip(),row[1], tag])
@@ -75,39 +64,33 @@ def parseData(input_file, writer):
     return(rows_delivered, rows_generated )
           
 if __name__ == '__main__':
-    for i, arg in enumerate(sys.argv):
-        if arg == '-h':
-            help_text()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--version", help="display version number", action="store_true")
+    parser.add_argument("--file", help="filename of the sce greenbutton data")
+    parser.add_argument("--host", help="the influxdb host name, no port or http\n example\n --host influxdb.mydomain.com")
+    parser.add_argument("--verbose", help="verbose output - send copy of each line to stdout", action="store_true")
+    parser.add_argument("--silent", help= "do not print totals output", action="store_true")
+    parser.add_argument("--port", help="port of the influxdb, if not provided it will default to 8086")
+    parser.add_argument("--csvout", help="sends parsed data to a csvfile instead of sending to influxdb. \n --host and --port are ignored", action="store_true")
+    args = parser.parse_args()
+
+    if args.version:
+            print ('sceinfluxdb.py - version', __version__)
             sys.exit()
-        elif arg == '-v':
-            print ('csv2log.py - version', __version__)
-            sys.exit()
-        elif prevarg == "-i" :
-            input_file = arg
-        elif prevarg == "-u" :
-            influx_url = arg
-        elif arg == '-v':
-            verbose = 'true'
-        elif arg == '-s':
-            silent_run = 'true'
-        elif arg == '-d':
-            dry_run = 'true'
-        prevarg = arg
-    if input_file == '':
-        help_text()
-        sys.exit('correct parameters not provided')
-    if influx_url == '' and dry_run == 'false':
-        help_text()
-        sys.exit('correct parameters not provided')
-    if dry_run == 'true':
+
+
+    if args.csvout:
         current_date = datetime.datetime.now()
-        csvfileout = 'load.' + str(int(current_date.strftime("%Y%m%d%H%M%S"))) + '.csv'
+        csvfileout = 'load.' + str(int(current_date.strftime("%Y%m%d%H%M"))) + '.csv'
         outfile = open(csvfileout, mode = 'w')
         writer = csv.writer(outfile)
         print("outfile", csvfileout)
-    stats_count = parseData(input_file, writer)
-    if silent_run == 'false':
+    
+    stats_count = parseData(args.file, writer, args.csvout)
+    
+    if not args.silent:
         print("Import Complete")
         print("Energy Delivered rows ", stats_count[0])
         print("Energy Generated rows ", stats_count[1])
+
 exit
