@@ -10,7 +10,7 @@ __author__ = "Garrett Gauthier"
 __copyright__ = "Copyright 2021, Garrett Gauthier"
 __credits__ = ["Garrett Gauthier", "Others soon?"]
 __license__ = "GPL"
-__version__ = "0.5.1"
+__version__ = "0.6.1"
 __VersionDate__ = "11/10/2021"
 __maintainer__ = "gauthig@github"
 __github__  = "https://github.com/gauthig/scegreenbutton"
@@ -19,9 +19,9 @@ __status__ = "Production"
 __status__ = "Production"
 
 from influxdb import InfluxDBClient
-#from influxdb.exceptions import InfluxDBClientError
-from pytz import timezone
-import sys, csv, datetime, time, argparse, gzip, json
+from influxdb.exceptions import InfluxDBClientError
+from datetime import datetime
+import sys, csv, time, argparse, gzip, json, pytz
 
 prevarg = ''
 influx_url = ''
@@ -41,6 +41,7 @@ def parseData(input_file,orgtimezone,verbose):
     row_num = 0
     tag = ''
     pmult = 0
+    dt_format  = " %Y-%m-%d %H:%M:%S"
     infile = open(input_file, mode = 'r')
     csv_reader = csv.reader(infile, delimiter=',')
     for row in csv_reader:
@@ -50,7 +51,9 @@ def parseData(input_file,orgtimezone,verbose):
             elif 'Delivered' in row[0]:
                 tag = "delivered"
             elif 'to' in row[0]:
-                times = row[0].split('to')
+                sce_timestamp = row[0].split('to')
+                dt_local = datetime.strptime(sce_timestamp[1], dt_format)
+                dt_utc = dt_local.astimezone(pytz.UTC)
                 if tag == 'generated':
                     rows_generated = rows_generated + 1
                     pmult = -1
@@ -64,7 +67,7 @@ def parseData(input_file,orgtimezone,verbose):
                     "tags": {
                     "type": tag
                     },
-                    "time": times[1].strip(),
+                    "time": dt_utc,
                     "fields": {
                     "value": float(row[1])*pmult
                     }
