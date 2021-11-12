@@ -1,22 +1,22 @@
 # sce-greenbutton
 Parse SCE Green Button download files
-Unfortunatly all green button data from utlities does not coem out in the same formay so this is tuned to SCE's net metering format.
-If someone provides sample data for other green button formats (including SCE non Net Metering) I will incorporate.  Also would accept controbutors that want to change the parsing function to parse thier format of data.  Will add a command line option to set which format to parse to. 
+Unfortunately, all green button data from utilities does not come out in the same format so this is tuned to SCE's net metering format.
+If someone provides sample data for other green button formats (including SCE non Net Metering) I will incorporate.  Also would accept contributors that want to change the parsing function to parse their format of data.  Will add a command line option to set which format to parse to. 
 
 ## Still in progress - here is what is completed and works
 
 Features
 - [X] Parse SCE NetMetering version of Green Button CSV file - Solar
-- [X] Send data to influxdb (v1, non-ssl) - should be on private network and not public accesible due to no ssl
-- [ ] Grafana dashbaord to anylze Energy Delivery and Generation
-- [X] Create formated text file for use in other programs (Formated for Influxdb)
+- [X] Send data to influxdb (v1, non-ssl) - should be on private network and not public accessible due to no SSL
+- [ ] Grafana dashboard to analyze Energy Delivery and Generation
+- [X] Create formatted text file for use in other programs (Formatted for Influxdb)
 - [ ] Create simple parsed CSV file for use in excel or other database
 - [ ] Add SSL support
 - [ ] Add support for influxdb2
 
 ## Program Setup 
 - python3
-- make sure the follwoing libaries are install usinf pip3 or homebrew
+- make sure the following libraries are install using pip3 or homebrew
   - influxdb
   - json
   - gzip
@@ -27,7 +27,7 @@ Features
 ### usage: sceinfluxdb.py [-h] [--version] -f FILE [-n HOSTNAME] [-v] [-q] [-P PORT] [-o] [-b BATCHSIZE]
 ###                      [--dbname [DBNAME]] [-u [USER]] [-p [PASSWORD]] [-tz TIMEZONE] [--createdb]
 
-Loads SCE Green Button csv file and send formated results to influxdb.Used for Net Metering format only (solar)
+Loads SCE Green Button csv file and send formatted results to influxdb.Used for Net Metering format only (solar)
 
 optional arguments:
 <br>  -h, --help            show this help message and exit
