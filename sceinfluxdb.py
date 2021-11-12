@@ -132,7 +132,7 @@ def senddata(
         for t in metricsout:
             response = client.write_points(t)
 
-        #  print("Wrote %d, response: %s" % (len(t), response))
+            #print("Wrote %d, response: %s" % (len(t), response))
 
     return ()
 
