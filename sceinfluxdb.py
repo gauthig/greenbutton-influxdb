@@ -49,7 +49,7 @@ def parseData(input_file, orgtimezone, verbose):
     row_num = 0
     tag = ''
     pmult = 0
-    dt_format = ' %Y-%m-%d %H:%M:%S'
+    dt_format = '%Y-%m-%d %H:%M:%S'
     infile = open(input_file, mode='r')
     csv_reader = csv.reader(infile, delimiter=',')
     for row in csv_reader:
@@ -60,8 +60,9 @@ def parseData(input_file, orgtimezone, verbose):
                 tag = 'delivered'
             elif 'to' in row[0]:
                 sce_timestamp = row[0].split('to')
-                dt_local = datetime.strptime(sce_timestamp[0],
-                        dt_format)
+                # SCE adds non-ASCII charter before the to field, need to strip
+                sce_timestamp=[item.replace('\xa0', '') for item in sce_timestamp]
+                dt_local = datetime.strptime(sce_timestamp[0], dt_format)
                 dt_utc = dt_local.astimezone(pytz.UTC)
                 if tag == 'generated':
                     rows_generated = rows_generated + 1
