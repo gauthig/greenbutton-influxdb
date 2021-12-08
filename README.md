@@ -1,7 +1,9 @@
 # sce-greenbutton
 Parse SCE Green Button download files
-Unfortunately, all green button data from utilities does not come out in the same format so this is tuned to SCE's net metering format.
-If someone provides sample data for other green button formats (including SCE non Net Metering) I will incorporate.  Also would accept contributors that want to change the parsing function to parse their format of data.  Will add a command line option to set which format to parse to. 
+Green button data from utilities is not always the same format so this is tuned to SCE's net metering format.  Yes, Even SCE has several formats based on cusomer plan.
+If someone provides sample data for other green button formats (including SCE non Net Metering) I will incorporate.  
+
+Looking for contributors that want to change the parsing function to parse their format of data.  Will add a command line option to set which format to parse to. 
 
 ## Still in progress - here is what is completed and works
 
