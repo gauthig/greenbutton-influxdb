@@ -60,7 +60,7 @@ def parseData(input_file, orgtimezone, verbose):
                 tag = 'delivered'
             elif 'to' in row[0]:
                 sce_timestamp = row[0].split('to')
-                dt_local = datetime.strptime(sce_timestamp[1],
+                dt_local = datetime.strptime(sce_timestamp[0],
                         dt_format)
                 dt_utc = dt_local.astimezone(pytz.UTC)
                 if tag == 'generated':
