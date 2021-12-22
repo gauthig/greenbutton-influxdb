@@ -42,7 +42,7 @@ writer = ''
 metricsout = []
 
 
-def parseData(input_file, orgtimezone, verbose):
+def parseData(input_file, orgtimezone, csvout, verbose):
     point = []
     rows_generated = 0
     rows_delivered = 0
@@ -50,6 +50,7 @@ def parseData(input_file, orgtimezone, verbose):
     tag = ''
     pmult = 0
     dt_format = '%Y-%m-%d %H:%M:%S'
+    xtime= ""
     infile = open(input_file, mode='r')
     csv_reader = csv.reader(infile, delimiter=',')
     for row in csv_reader:
@@ -64,6 +65,7 @@ def parseData(input_file, orgtimezone, verbose):
                 sce_timestamp=[item.replace('\xa0', '') for item in sce_timestamp]
                 dt_local = datetime.strptime(sce_timestamp[0], dt_format)
                 dt_utc = dt_local.astimezone(pytz.UTC)
+                dt_utc = dt_utc.strftime("%Y-%m-%d %H:%M:%S")
                 if tag == 'generated':
                     rows_generated = rows_generated + 1
                     pmult = -1
@@ -71,18 +73,20 @@ def parseData(input_file, orgtimezone, verbose):
                     rows_delivered = rows_delivered + 1
                     pmult = 1
 
-                # point = {"measurement" : "SCE", "tags": tag, "time": times[1].strip(), "field": row[1] }
+                
 
-                point = [{
-                    'measurement': 'SCE',
-                    'tags': {'type': tag},
-                    'time': dt_utc,
-                    'fields': {'value': float(row[1]) * pmult},
-                    }]
+                point = {
+                    "measurement" : "SCE",
+                    "tags": {"type": tag},
+                    "time": dt_utc,
+                    "fields": {"value": float(row[1]) * pmult}
+                    }
 
                 metricsout.append(point)
+                #metricsout.append("SCE, tag=" tag "vale="float(row[1]) * pmult )
                 if verbose:
                     print (point)
+ 
 
     return (rows_delivered, rows_generated)
 
@@ -130,9 +134,8 @@ def senddata(
         # print('Inserting %d metricsout...'%(len(metricsout)))
 
         client.switch_user(user, password)
-        for t in metricsout:
-            response = client.write_points(t)
 
+        response = client.write_points(metricsout,batch_size=10000)
             #print("Wrote %d, response: %s" % (len(t), response))
 
     return ()
@@ -183,10 +186,9 @@ if __name__ == '__main__':
         sys.exit()
 
     (rows_delivered, rows_generated) = parseData(args.file,
-            args.timezone, args.verbose)
+            args.timezone, args.csvout, args.verbose)
 
-    if args.csvout:
-        writedata()
+ 
 
     if args.hostname:
         senddata(
