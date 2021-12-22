@@ -73,13 +73,12 @@ def parseData(input_file, orgtimezone, verbose):
 
                 # point = {"measurement" : "SCE", "tags": tag, "time": times[1].strip(), "field": row[1] }
 
-                point = {
+                point = [{
                     'measurement': 'SCE',
                     'tags': {'type': tag},
                     'time': dt_utc,
                     'fields': {'value': float(row[1]) * pmult},
-                    }
-
+                    }]
 
                 metricsout.append(point)
                 if verbose:
@@ -90,38 +89,19 @@ def parseData(input_file, orgtimezone, verbose):
 
 def writedata():
     current_date = datetime.now()
-    rowout = ''
-    csv_file = 'load.out' + str(int(current_date.strftime('%Y%m%d%H%M'
-                               ))) + '.csv'
+    fileout = 'load.out' + str(int(current_date.strftime('%Y%m%d%H%M'
+                               ))) + '.out'
 
     # for t in metricsout:
     #    f.write((t) + '\n')
 
-    #with open(fileout, 'w', encoding='utf-8-sig') as f:
-        #writer = csv.writer(f)
+    with open(fileout, 'w', encoding='utf-8-sig') as f:
+        writer = csv.writer(f)
+
         # writer.writerow(header) # write the header
 
-        #for t in metricsout:
-            
-        #    rowout=[item.replace('\"', '') for item in t]
-        #    writer.writerow(rowout)
-    csv_columns = ['measurement', 'tags', 'time', 'fields']
-     
-    #try:
-    #    with open(csv_file, 'w') as csvfile:
-    #        writer = csv.DictWriter(csvfile, fieldnames=csv_columns)
-    #        writer.writeheader()
-    #        for data in metricsout:
-    #            writer.writerow(data)
-    #except IOError:
-    #    print("I/O error")
-    #for m in metricsout:
-    #    print('\n', m)
-    print(csv_columns)
-    for a in metricsout:
-
-        print (metricsout[a]['measurement'],metricsout[a]['tags']['type'],metricsout[a]['time'],metricsout[a]['fields']['value'] )
-
+        for t in metricsout:
+            writer.writerow(t)
 
     return ()
 
