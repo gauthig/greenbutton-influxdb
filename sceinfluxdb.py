@@ -72,20 +72,14 @@ def parseData(input_file, orgtimezone, verbose):
                     pmult = 1
 
                 # point = {"measurement" : "SCE", "tags": tag, "time": times[1].strip(), "field": row[1] }
-                """
+
                 point = [{
                     'measurement': 'SCE',
                     'tags': {'type': tag},
                     'time': dt_utc,
                     'fields': {'value': float(row[1]) * pmult},
                     }]
-                """
-                point = [{
-                    'measurement': 'SCE',
-                    'tags': {'type': tag},
-                    'time': dt_utc,
-                    'fields': {'value': float(row[1]) * pmult},
-                    }]
+
 
                 metricsout.append(point)
                 if verbose:
