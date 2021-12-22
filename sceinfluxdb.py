@@ -42,7 +42,7 @@ writer = ''
 metricsout = []
 
 
-def parseData(input_file, orgtimezone, csvout, verbose):
+def parseData(input_file, orgtimezone,  verbose):
     point = []
     rows_generated = 0
     rows_delivered = 0
@@ -83,7 +83,7 @@ def parseData(input_file, orgtimezone, csvout, verbose):
                     }
 
                 metricsout.append(point)
-                #metricsout.append("SCE, tag=" tag "vale="float(row[1]) * pmult )
+
                 if verbose:
                     print (point)
  
@@ -96,17 +96,15 @@ def writedata():
     fileout = 'load.out' + str(int(current_date.strftime('%Y%m%d%H%M'
                                ))) + '.out'
 
-    # for t in metricsout:
-    #    f.write((t) + '\n')
-
+    #Influxformat
     with open(fileout, 'w', encoding='utf-8-sig') as f:
-        writer = csv.writer(f)
-
-        # writer.writerow(header) # write the header
-
-        for t in metricsout:
-            writer.writerow(t)
-
+        csv_columns = ['measurement','fields','tags','time']
+        writer = csv.DictWriter(f,fieldnames=csv_columns )
+        writer.writeheader()
+  
+        for data in metricsout:
+            writer.writerow(data)
+        
     return ()
 
 
@@ -186,9 +184,10 @@ if __name__ == '__main__':
         sys.exit()
 
     (rows_delivered, rows_generated) = parseData(args.file,
-            args.timezone, args.csvout, args.verbose)
+            args.timezone,  args.verbose)
 
- 
+    if args.csvout:
+        writedata()
 
     if args.hostname:
         senddata(
