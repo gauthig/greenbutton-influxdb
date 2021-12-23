@@ -104,6 +104,7 @@ def writedata():
   
         for data in metricsout:
             writer.writerow(data)
+            print(data)
         
     return ()
 
