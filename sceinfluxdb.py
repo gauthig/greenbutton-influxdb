@@ -27,7 +27,6 @@ import sys
 import csv
 import time
 import argparse
-import gzip
 import json
 import pytz
 
@@ -58,6 +57,8 @@ def parseData(input_file, orgtimezone,  verbose):
             if 'Received' in row[0]:
                 tag = 'generated'
             elif 'Delivered' in row[0]:
+                tag = 'delivered'
+            elif 'Consumption' in row[0]:
                 tag = 'delivered'
             elif 'to' in row[0]:
                 sce_timestamp = row[0].split('to')
@@ -92,20 +93,29 @@ def parseData(input_file, orgtimezone,  verbose):
 
 
 def writedata():
+    textout = ''
     current_date = datetime.now()
-    fileout = 'load.out' + str(int(current_date.strftime('%Y%m%d%H%M'
-                               ))) + '.out'
+    fileout = 'energy' + str(int(current_date.strftime('%Y%m%d%H%M'
+                               ))) + '.csv'
 
     #Influxformat
-    with open(fileout, 'w', encoding='utf-8-sig') as f:
-        csv_columns = ['measurement','fields','tags','time']
-        writer = csv.DictWriter(f,fieldnames=csv_columns )
-        writer.writeheader()
+    with open(fileout, 'w', encoding='UTF-8') as f:
+        csv_columns = 'measurement,time,value'
+        
+        #writer = csv.writer(f)
+        f.write(csv_columns)
   
         for data in metricsout:
-            writer.writerow(data)
-            print(data)
-        
+            textout = '\n' +  json.dumps(data)
+            textout = textout.replace('{"measurement": "SCE", "tags": {"type": "', '')
+            textout = textout.replace('"}, "time": "', ',')
+            textout = textout.replace('", "fields": {"value":', ',')
+            textout = textout.replace('}}', '')
+            f.write(textout)
+            print(textout)
+            
+            
+            
     return ()
 
 
