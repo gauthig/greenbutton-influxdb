@@ -17,7 +17,7 @@ Features
 - [ ] SSL support
 - [ ] Support for influxdb2
 - [ ] Add yaml options file to retain settings for repeat runs
-
+- [ ] Convert to PEP 8 style guide
 
 ## Program Setup 
 - python3
