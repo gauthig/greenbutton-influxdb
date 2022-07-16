@@ -36,7 +36,7 @@ Loads SCE Green Button csv file and send formatted results to influxdb.Used for 
 optional arguments:
 <br>  -h, --help            show this help message and exit
 <br>   --version             display version number
-<br>   -f FILE, --file FILE  filename of the sce greenbutton data
+<br>   -f FILE, --file FILE  *REQUIRED* filename of the utility provided csv kwh file
 <br>   -n HOSTNAME, --hostname HOSTNAME
                         the influxdb host name, no port or http example --host influxdb.mydomain.com
 <br>   -v, --verbose         verbose output - send copy of each line to stdout
