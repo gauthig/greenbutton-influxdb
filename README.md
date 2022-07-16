@@ -55,10 +55,10 @@ optional arguments:
 <br>   --createdb            Drop database and create a new one.
 
 ## Output of program 
-the following three values are the output:
-measurement -- Either delivered (power from the utility)  or generated (solar power sent to the utility)
-time --        Converted based on the timezone parameter, format is YYYY-MM-DD HH:MM:SS
-value --       Kilo Watt Hours - decimal percision is based on what the raw utility file is
+The following three values are the output:<br>
+<br><b>measurement --</b> Either delivered (power from the utility)  or generated (solar power sent to the utility)
+<br><b>time --</b> Converted based on the timezone parameter, format is YYYY-MM-DD HH:MM:SS
+<br><b>value --</b>  Kilo Watt Hours - decimal percision is based on what the raw utility file is
 
 
 ## Notes ##
