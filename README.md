@@ -9,7 +9,7 @@ Looking for contributors that want to change the parsing function to parse their
 
 Features
 - [X] Parse SCE NetMetering version of Green Button CSV file - Solar
-- [X] Parse SCE non-Netmetering version of Green Button CSV file - Normal Residential Customers without solar
+- [ ] Parse SCE non-Netmetering version of Green Button CSV file - Normal Residential Customers without solar
 - [X] Send data to influxdb (v1, non-ssl) - should be on private network and not public accessible due to no SSL
 - [ ] Grafana dashboard to analyze Energy Delivery and Generation
 - [X] Create formatted text file for use in other programs (Formatted for Influxdb)
@@ -17,11 +17,11 @@ Features
 - [ ] SSL support
 - [ ] Support for influxdb2
 - [ ] Add yaml options file to retain settings for repeat runs
-
+- [ ] Convert to PEP 8 style guide
 
 ## Program Setup 
 - python3
-- make sure the following libraries are install using pip3 or homebrew
+- make sure the following libraries are install using pip3 or homebrew, see the requirements file
   - influxdb
   - json
   - argparse
@@ -36,7 +36,7 @@ Loads SCE Green Button csv file and send formatted results to influxdb.Used for 
 optional arguments:
 <br>  -h, --help            show this help message and exit
 <br>   --version             display version number
-<br>   -f FILE, --file FILE  filename of the sce greenbutton data
+<br>   -f FILE, --file FILE  *REQUIRED* filename of the utility provided csv kwh file
 <br>   -n HOSTNAME, --hostname HOSTNAME
                         the influxdb host name, no port or http example --host influxdb.mydomain.com
 <br>   -v, --verbose         verbose output - send copy of each line to stdout
@@ -53,3 +53,16 @@ optional arguments:
 <br>   -tz TIMEZONE, --timezone TIMEZONE
                         Timezone of supplied data. Default: UTC
 <br>   --createdb            Drop database and create a new one.
+
+## Output of program 
+The following three values are the output:<br>
+<br><b>measurement --</b> Either delivered (power from the utility)  or generated (solar power sent to the utility)
+<br><b>time --</b> Converted based on the timezone parameter, format is YYYY-MM-DD HH:MM:SS
+<br><b>value --</b>  Kilo Watt Hours - decimal percision is based on what the raw utility file is
+
+
+## Notes ##
+- Why did I use csv and not xml?  Sending xml to influx works great but is converted and consumes high memeory/cpu.  Many people are running this type of influx/grafana stack on a RasberryPI and thus running with csv, allows for an entire year of import to take a few seconds and little memory. 
+- Why unsecure influxdb v1? It is a very common stack used on private networks, but strongly recomned all home users to start using secure engines in thier home network to practice Privacy by Design.   Also as to why InfluxDB v1 at all, InfluxDB v2 changed from sql to thier own language and some basic functions are missing.
+- How can I get more details of my energy usage?  Look at something like VUE (https://www.emporiaenergy.com/) and then bring that data back with other github projects.
+- 
