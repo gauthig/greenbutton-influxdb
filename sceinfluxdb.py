@@ -1,5 +1,12 @@
-#!/usr/bin/python
+#!/usr/bin/python3 
 # -*- coding: utf-8 -*-
+
+#### NOTE ####
+# Please make sure your python binary is listed in the first line. 
+# i.e. if your python is just python and not python 3 change it. 
+# If your python is in /bin or /opt change it
+# I know the above statement is normal shell programming, but I have recevied several questions on 'What does bad interpreter mean' 
+#
 
 # sceinfluxdb.py
 # Input - SCE Green Data (TOU Style)
@@ -157,7 +164,7 @@ if __name__ == '__main__':
     parser.add_argument('--version', help='display version number',
                         action='store_true')
     parser.add_argument('-f', '--file', required=True,
-                        help='filename of the sce greenbutton data')
+                        help='*REQUIRED* filename of the utility provided csv kwh file')
     parser.add_argument('-n', '--hostname',
                         help='''the influxdb host name, no port or http
  example
