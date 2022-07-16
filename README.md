@@ -53,3 +53,11 @@ optional arguments:
 <br>   -tz TIMEZONE, --timezone TIMEZONE
                         Timezone of supplied data. Default: UTC
 <br>   --createdb            Drop database and create a new one.
+
+
+
+## Notes ##
+- Why did I use csv and not xml?  Sending xml to influx works great but is converted and consumes high memeory/cpu.  Many people are running this type of influx/grafana stack on a RasberryPI and thus running with csv, allows for an entire year of import to take a few seconds and little memory. 
+- Why unsecure influxdb v1? It is a very common stack used on private networks, but strongly recomned all home users to start using secure engines in thier home network to practice Privacy by Design.   Also as to why InfluxDB v1 at all, InfluxDB v2 changed from sql to thier own language and some basic functions are missing.
+- How can I get more details of my energy usage?  Look at something like VUE (https://www.emporiaenergy.com/) and then bring that data back with other github projects.
+- 
