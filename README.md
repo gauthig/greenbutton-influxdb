@@ -9,7 +9,7 @@ Looking for contributors that want to change the parsing function to parse their
 
 Features
 - [X] Parse SCE NetMetering version of Green Button CSV file - Solar
-- [X] Parse SCE non-Netmetering version of Green Button CSV file - Normal Residential Customers without solar
+- [ ] Parse SCE non-Netmetering version of Green Button CSV file - Normal Residential Customers without solar
 - [X] Send data to influxdb (v1, non-ssl) - should be on private network and not public accessible due to no SSL
 - [ ] Grafana dashboard to analyze Energy Delivery and Generation
 - [X] Create formatted text file for use in other programs (Formatted for Influxdb)
@@ -21,7 +21,7 @@ Features
 
 ## Program Setup 
 - python3
-- make sure the following libraries are install using pip3 or homebrew
+- make sure the following libraries are install using pip3 or homebrew, see the requirements file
   - influxdb
   - json
   - argparse
