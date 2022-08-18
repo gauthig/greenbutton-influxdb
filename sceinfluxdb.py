@@ -14,13 +14,13 @@
 #
 
 __author__ = 'Garrett Gauthier'
-__copyright__ = 'Copyright 2021, Garrett Gauthier'
+__copyright__ = 'Copyright 2022, Garrett Gauthier'
 __author__ = 'Garrett Gauthier'
-__copyright__ = 'Copyright 2021, Garrett Gauthier'
+__copyright__ = 'Copyright 2022, Garrett Gauthier'
 __credits__ = ['Garrett Gauthier', 'Others soon?']
 __license__ = 'GPL'
-__version__ = '1.0.1'
-__VersionDate__ = '11/11/2021'
+__version__ = '1.1'
+__VersionDate__ = '08/11/2022'
 __maintainer__ = 'gauthig@github'
 __github__ = 'https://github.com/gauthig/scegreenbutton'
 __email__ = 'garrett-g@outlook.com'
