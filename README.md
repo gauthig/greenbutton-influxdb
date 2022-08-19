@@ -16,42 +16,35 @@ Features
 - [X] Create simple parsed CSV file for use in excel or other database
 - [ ] SSL support
 - [ ] Support for influxdb2
-- [ ] Add yaml options file to retain settings for repeat runs
+- [i] Add yaml options file to retain settings for repeat runs
 - [ ] Convert to PEP 8 style guide
 
-## Program Setup 
-- python3
-- make sure the following libraries are install using pip3 or homebrew, see the requirements file
-  - influxdb
-  - json
-  - argparse
-- Run the program
+## Requirements
+- python3 nees to be installed along with PIP
+- make sure required libraries are installed using pip3 or homebrew, see the requirements file or run the command
+# pip install -r requirements.txt
+ or
+# pip3 install -r requirements.txt
+<br>
+
+- Must have access to influxdb v1 
+
+- Update energyimport.json paramter file
+
+- Run the program, to test you can use the SCE-NEMFILE.sample file
 
 ## Usage
-### usage: sceinfluxdb.py [-h] [--version] -f FILE [-n HOSTNAME] [-v] [-q] [-P PORT] [-o] [-b BATCHSIZE]
-###                      [--dbname [DBNAME]] [-u [USER]] [-p [PASSWORD]] [-tz TIMEZONE] [--createdb]
+### usage: greenbutton_import.py [-h] [--version] -f FILE [-v] [-q]  [-o] [--createdb]
 
-Loads SCE Green Button csv file and send formatted results to influxdb.Used for Net Metering format only (solar)
+Loads Green Button (Residential Energy Usage) csv file and send formatted results to influxdb.Used for Net Metering format only (solar)
 
 optional arguments:
 <br>  -h, --help            show this help message and exit
 <br>   --version             display version number
 <br>   -f FILE, --file FILE  *REQUIRED* filename of the utility provided csv kwh file
-<br>   -n HOSTNAME, --hostname HOSTNAME
-                        the influxdb host name, no port or http example --host influxdb.mydomain.com
 <br>   -v, --verbose         verbose output - send copy of each line to stdout
 <br>   -q, --quiet           do not print totals output
-<br>   -P PORT, --port PORT  port of the influxdb, if not provided it will default to 8086
 <br>   -o, --csvout          sends parsed data to a csvfile. -p can be used or omitted with -o
-<br>   -b BATCHSIZE, --batchsize BATCHSIZE
-                        Batch size. Default: 5000.
-<br>   --dbname [DBNAME]     Database name. Required if -n and -p used
-<br>   -u [USER], --user [USER]
-                        influxdb userid
-<br>   -p [PASSWORD], --password [PASSWORD]
-                        Influxdb password
-<br>   -tz TIMEZONE, --timezone TIMEZONE
-                        Timezone of supplied data. Default: UTC
 <br>   --createdb            Drop database and create a new one.
 
 ## Output of program 
@@ -62,7 +55,8 @@ The following three values are the output:<br>
 
 
 ## Notes ##
-- Why did I use csv and not xml?  Sending xml to influx works great but is converted and consumes high memeory/cpu.  Many people are running this type of influx/grafana stack on a RasberryPI and thus running with csv, allows for an entire year of import to take a few seconds and little memory. 
-- Why unsecure influxdb v1? It is a very common stack used on private networks, but strongly recomned all home users to start using secure engines in thier home network to practice Privacy by Design.   Also as to why InfluxDB v1 at all, InfluxDB v2 changed from sql to thier own language and some basic functions are missing.
+- Why did I use csv and not xml?  Sending xml to influx works great but is converted and consumes high memory/cpu.  Many people are running this type of influx/grafana stack on a RasberryPI and thus running with csv, allows for an entire year of import to take a few seconds and little memory. 
+- Why unsecure influxdb v1? It is a very common stack used on private networks, but strongly recomned all home users to start using secure engines in thier home network to practice Privacy by Design.   Also as to why InfluxDB v1 at all, InfluxDB v2 changed from sql to thier own language and some basic functions are missing.  I am working on a InfluxDB V2 version and using flux for the grafana dashboard
+- Why only Southern California Edison?  Green Button Data is provided by most utlities as a standard US Department of Energy Standard. But the output format is not standardized.  Please create an issue and provide a sample for any other utilites.  This also includes non-Solar sample files.  If you do, make sure you blank out any personal information inthe file like your account number or address.  If you want to add logic to parse another file format, please contact me to be a contributor.  
 - How can I get more details of my energy usage?  Look at something like VUE (https://www.emporiaenergy.com/) and then bring that data back with other github projects.
 - 
