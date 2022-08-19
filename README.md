@@ -16,7 +16,7 @@ Features
 - [X] Create simple parsed CSV file for use in excel or other database
 - [ ] SSL support
 - [ ] Support for influxdb2
-- [i] Add yaml options file to retain settings for repeat runs
+- [X] JSON config file to retain settings for repeat runs
 - [ ] Convert to PEP 8 style guide
 
 ## Requirements
