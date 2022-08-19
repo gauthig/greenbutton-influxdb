@@ -1,0 +1,11 @@
+{
+        "host": "grafana.ggcloud.us",
+        "port": 8086,
+        "user": "root",
+        "password": "root",
+        "dbname": "sce-test2",
+        "ssl_enable": false,
+        "ssl_verify": false,
+	"timezone": "America/Los_Angeles",
+        "batchsize": 5000
+ }
