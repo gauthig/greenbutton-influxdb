@@ -1,11 +1,9 @@
 # Contributing to the project
 There are various ways to contribute to any open source Github project besides coding.  
-Reporting issues, fetaure requsts, documentaion updates...
-
----
+Reporting issues, feature requests, documentation updates.
 
 
-- 
+
 #### Documentation! :page_with_curl:
 
 Please help improve documentation with your inputs to our READMEs, examples, and FAQs.
@@ -22,12 +20,11 @@ Bugs and issues are tracked as [GitHub Issues](https://github.com/gauthig/sce-gr
 * Ensure the title captures the subject of the issue
 * Describe the exact procedures in replicating the issue(s)
 * Explain the issue(s)
-* Provide details about your ennvironment and sample input/output
+* Provide details about your environment and sample input/output
 * Fill out the [Issue Template](https://github.com/gauthig/sce-greenbutton/issues/new/choose) 
 * Label the issue as a bug
 
 #### Feature Requests :sparkles:
-
 
 Feature requests are tracked as [GitHub Issues](https://github.com/gauthig/sce-greenbutton/issues).
 **Please follow these guidelines when submitting a feature request:**
@@ -48,6 +45,8 @@ Feature requests are tracked as [GitHub Issues](https://github.com/gauthig/sce-g
 * Verify any and all changes were extensively tested
 
 **Coding Style:**
-Please conform to [Python Enhacement Proposal 8 (PEP8)]https://peps.python.org/pep-0008/
-Code should be ran through pylint for style guide complaince, dead objects and other coding issues
-A pylint rc file is provided in the repository
+* Please conform to [PEP8]https://peps.python.org/pep-0008/
+* Code should be ran through pylint for style guide compliance, dead objects and other coding issues
+* A pylint rc file is provided in the repository
+
+
