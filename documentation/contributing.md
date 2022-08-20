@@ -48,7 +48,7 @@ Feature requests are tracked as [GitHub Issues](https://github.com/gauthig/sce-g
 * Please conform to [PEP8](https://peps.python.org/pep-0008/) style guide
 * Code should be ran through pylint for style guide compliance, dead objects and other coding issues
 * A pylint rc file is provided in the repository
-- pylint usage (must be installed first for your environment)
-pylint --rcfile=pylintrc greenbutton_import.py
+* pylint usage (must be installed first for your environment)
+<br>pylint --rcfile=pylintrc greenbutton_import.py
 
 

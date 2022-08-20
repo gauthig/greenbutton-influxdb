@@ -5,7 +5,7 @@
 # Please make sure your python binary is listed in the first line.
 # i.e. if your python is just python and not python 3 change it.
 # If your python is in /bin or /opt change it
-# I know the above statement is normal shell programming, 
+# I know the above statement is normal shell programming,
 # but I have recevied several questions on 'What does bad interpreter mean'
 #
 
@@ -21,7 +21,7 @@ __copyright__ = 'Copyright 2022, Garrett Gauthier'
 __credits__ = ['Garrett Gauthier', 'Others soon?']
 __license__ = 'GPL'
 __version__ = '1.1'
-__VersionDate__ = '08/18/2022'
+__versiondate__ = '08/18/2022'
 __maintainer__ = 'gauthig@github'
 __github__ = 'https://github.com/gauthig/scegreenbutton'
 __email__ = 'garrett-g@outlook.com'
@@ -49,23 +49,21 @@ writer = ''
 metricsout = []
 
 
-def getConfigValue(key, defaultValue):
+def get_config_value(key, default_value):
     if key in config:
         return config[key]
-    return defaultValue
+    return default_value
 
-def parseData(input_file, orgtimezone, verbose):
+def parse_data(input_file, verbose):
     if verbose:
-        print('Starting parseData')
+        print('Starting parse_data')
 
     point = []
     rows_generated = 0
     rows_delivered = 0
-    row_num = 0
     tag = ''
     pmult = 0
     dt_format = '%Y-%m-%d %H:%M:%S'
-    xtime = ""
     infile = open(input_file, mode='r')
     csv_reader = csv.reader(infile, delimiter=',')
     if verbose:
@@ -153,13 +151,15 @@ def senddata(hostname, port, user, password,
 
     if len(metricsout) > 0:
         client.switch_user(user, password)
-        response = client.write_points(metricsout, batch_size=10000)
+        response = client.write_points(metricsout, batchsize)
+    if args.verbose:
+        print('influxdb response', response)
     return ()
 
 if __name__ == '__main__':
-    configFilename = 'greenbutton.json'
+    config_filename = 'greenbutton.json'
     config = {}
-    with open(configFilename) as configFile:
+    with open(config_filename) as configFile:
         config = json.load(configFile)
 
     print('Influx Host:', config['host'])
@@ -198,7 +198,7 @@ if __name__ == '__main__':
     parser.add_argument(
         '--nodb',
         help=
-        'Will not uplocad to influxdb.  Use with -o or --csvout for local file only'
+        'Will import to influxdb. Use with -o for local file only'
     )
     args = parser.parse_args()
 
@@ -209,8 +209,7 @@ if __name__ == '__main__':
     if args.verbose:
         print('Parsed arguments')
 
-    (rows_delivered, rows_generated) = parseData(args.file, config['timezone'],
-                                                 args.verbose)
+    (rows_delivered, rows_generated) = parse_data(args.file, args.verbose)
 
     if args.csvout:
         writedata()
@@ -225,4 +224,4 @@ if __name__ == '__main__':
         print('Energy Delivered rows ', rows_delivered)
         print('Energy Generated rows ', rows_generated)
 
-exit
+exit()
