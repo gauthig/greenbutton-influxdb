@@ -1,6 +1,6 @@
 # Green button import to Influxdb
-Parse SCE Green Button download files only for now
-Green button data from utilities is not always the same format so this is tuned to SCE's net metering format.  Yes, Even SCE has several formats based on customer plan.
+Parse SCE Green Button download files only for now. 
+<br>Green button data from utilities is not always the same format so this is tuned to SCE's net metering format.  Yes, Even SCE has several formats based on customer plan.
 If someone provides sample data for other green button formats (including SCE non Net Metering) I will incorporate.  
 
 Looking for contributors for other utility formats, code enhancements, bugs, documentation ....
@@ -18,7 +18,7 @@ Features
 - [ ] SSL support
 - [ ] Support for influxdb2
 - [X] JSON config file to retain settings for repeat runs
-- [ ] Convert to PEP 8 style guide
+- [X] Convert to PEP 8 style guide
 
 ## Requirements
 - python3 needs to be installed along with PIP
