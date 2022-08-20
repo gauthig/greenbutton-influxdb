@@ -5,7 +5,8 @@
 # Please make sure your python binary is listed in the first line.
 # i.e. if your python is just python and not python 3 change it.
 # If your python is in /bin or /opt change it
-# I know the above statement is normal shell programming, but I have recevied several questions on 'What does bad interpreter mean'
+# I know the above statement is normal shell programming, 
+# but I have recevied several questions on 'What does bad interpreter mean'
 #
 
 # greenbutton_import.py
@@ -52,7 +53,6 @@ def getConfigValue(key, defaultValue):
     if key in config:
         return config[key]
     return defaultValue
-
 
 def parseData(input_file, orgtimezone, verbose):
     if verbose:
@@ -139,39 +139,24 @@ def writedata():
     return ()
 
 
-def senddata(
-    hostname,
-    port,
-    user,
-    password,
-    dbname,
-    batchsize,
-    timezone,
-    createdb,
-):
+def senddata(hostname, port, user, password,
+             dbname, batchsize, timezone, createdb,
+            ):
 
     client = InfluxDBClient(hostname, port, user, password, dbname)
 
-    if createdb == True:
+    if createdb:
         print('Deleting database %s' % dbname)
         client.drop_database(dbname)
         print('Creating database %s' % dbname)
         client.create_database(dbname)
 
     if len(metricsout) > 0:
-
-        # print('Inserting %d metricsout...'%(len(metricsout)))
-
         client.switch_user(user, password)
-
         response = client.write_points(metricsout, batch_size=10000)
-        #print("Wrote %d, response: %s" % (len(t), response))
-
     return ()
 
-
 if __name__ == '__main__':
-
     configFilename = 'energyimport.json'
     config = {}
     with open(configFilename) as configFile:
@@ -179,7 +164,6 @@ if __name__ == '__main__':
 
     print('Influx Host:', config['host'])
     print('Influx Port:', config['port'])
-
 
     parser = \
         argparse.ArgumentParser(description='Loads Green Button csv file and send formated results to influxdb.Used for Net Metering format only (solar)'
