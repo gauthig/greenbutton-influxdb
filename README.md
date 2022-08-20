@@ -1,5 +1,5 @@
-# sce-greenbutton
-Parse SCE Green Button download files
+# Green button import to Influxdb
+Parse SCE Green Button download files only for now
 Green button data from utilities is not always the same format so this is tuned to SCE's net metering format.  Yes, Even SCE has several formats based on customer plan.
 If someone provides sample data for other green button formats (including SCE non Net Metering) I will incorporate.  
 
