@@ -45,7 +45,7 @@ Feature requests are tracked as [GitHub Issues](https://github.com/gauthig/sce-g
 * Verify any and all changes were extensively tested
 
 **Coding Style:**
-* Please conform to [PEP8](https://peps.python.org/pep-0008/)
+* Please conform to [PEP8](https://peps.python.org/pep-0008/) style guide
 * Code should be ran through pylint for style guide compliance, dead objects and other coding issues
 * A pylint rc file is provided in the repository
 

@@ -1,9 +1,10 @@
 # sce-greenbutton
 Parse SCE Green Button download files
-Green button data from utilities is not always the same format so this is tuned to SCE's net metering format.  Yes, Even SCE has several formats based on cusomer plan.
+Green button data from utilities is not always the same format so this is tuned to SCE's net metering format.  Yes, Even SCE has several formats based on customer plan.
 If someone provides sample data for other green button formats (including SCE non Net Metering) I will incorporate.  
 
-Looking for contributors that want to change the parsing function to parse their format of data.  Will add a command line option to set which format to parse to. 
+Looking for contributors for other utility formats, code enhancements, bugs, documentation ....
+If you would like to contribute anything including just identifying enhancements or bugs, please see the [contributor guide](https://github.com/gauthig/sce-greenbutton/blob/main/documentation/contributing.md)
 
 ## Still in progress - here is what is completed and works
 
@@ -20,7 +21,7 @@ Features
 - [ ] Convert to PEP 8 style guide
 
 ## Requirements
-- python3 nees to be installed along with PIP
+- python3 needs to be installed along with PIP
 - make sure required libraries are installed using pip3 or homebrew, see the requirements file or run the command
 # pip install -r requirements.txt
  or
@@ -29,7 +30,7 @@ Features
 
 - Must have access to influxdb v1 
 
-- Update energyimport.json paramter file
+- Update energyimport.json parameter file
 
 - Run the program, to test you can use the SCE-NEMFILE.sample file
 
@@ -50,13 +51,11 @@ optional arguments:
 ## Output of program 
 The following three values are the output:<br>
 <br><b>measurement --</b> Either delivered (power from the utility)  or generated (solar power sent to the utility)
-<br><b>time --</b> Converted based on the timezone parameter, format is YYYY-MM-DD HH:MM:SS
-<br><b>value --</b>  Kilo Watt Hours - decimal percision is based on what the raw utility file is
+<br><b>time --</b> Converted based on the time zone parameter, format is YYYY-MM-DD HH:MM:SS
+<br><b>value --</b>  Kilo Watt Hours - decimal precision is based on what the raw utility file is
+
+## References ##
+- FAQ's and general information is in the Wiki
+- How to [contribute and create issues](https://github.com/gauthig/sce-greenbutton/blob/main/documentation/contributing.md)
 
 
-## Notes ##
-- Why did I use csv and not xml?  Sending xml to influx works great but is converted and consumes high memory/cpu.  Many people are running this type of influx/grafana stack on a RasberryPI and thus running with csv, allows for an entire year of import to take a few seconds and little memory. 
-- Why unsecure influxdb v1? It is a very common stack used on private networks, but strongly recomned all home users to start using secure engines in thier home network to practice Privacy by Design.   Also as to why InfluxDB v1 at all, InfluxDB v2 changed from sql to thier own language and some basic functions are missing.  I am working on a InfluxDB V2 version and using flux for the grafana dashboard
-- Why only Southern California Edison?  Green Button Data is provided by most utlities as a standard US Department of Energy Standard. But the output format is not standardized.  Please create an issue and provide a sample for any other utilites.  This also includes non-Solar sample files.  If you do, make sure you blank out any personal information inthe file like your account number or address.  If you want to add logic to parse another file format, please contact me to be a contributor.  
-- How can I get more details of my energy usage?  Look at something like VUE (https://www.emporiaenergy.com/) and then bring that data back with other github projects.
-- 
