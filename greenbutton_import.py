@@ -157,7 +157,7 @@ def senddata(hostname, port, user, password,
     return ()
 
 if __name__ == '__main__':
-    configFilename = 'energyimport.json'
+    configFilename = 'greenbutton.json'
     config = {}
     with open(configFilename) as configFile:
         config = json.load(configFile)
