@@ -15,8 +15,8 @@ Features
  File is group by day and has Consumed header tag
 - [X] Send data to influxdb (v1, non-ssl) - should be on private network and not public accessible due to no SSL
 - [ ] Grafana dashboard to analyze Energy Delivery and Generation
-- [X] Create formatted text file for use in other programs (Formatted for Influxdb)
-- [X] Create simple parsed CSV file for use in excel or other database
+- [X] Simple parsed CSV file for use in excel, manual influxdb or other database
+- [X] JSON file output format. One closed xml line for each measuremnt
 - [ ] SSL support
 - [ ] Support for influxdb2
 - [X] JSON config file to retain settings for repeat runs
@@ -37,22 +37,26 @@ Features
 - Run the program, to test you can use the SCE-NEMFILE.sample file
 
 ## Usage
-### usage: greenbutton_import.py [-h] [--version] -f FILE [-v] [-q]  [-o] [--createdb]
+### greenbutton_import.py [-h] [--version] -f FILE [-v] [-q] [-c] [-j] [--createdb] [--nodb]
 
-Loads Green Button (Residential Energy Usage) csv file and send formatted results to influxdb.Used for Net Metering format only (solar)
-
-optional arguments:
+<br>Loads Green Button csv file and send formated results to influxdb. Used for Net Metering format only
+(solar)
+<br>
+<br>optional arguments:
 <br>  -h, --help            show this help message and exit
-<br>   --version             display version number
-<br>   -f FILE, --file FILE  *REQUIRED* filename of the utility provided csv kwh file
-<br>   -v, --verbose         verbose output - send copy of each line to stdout
-<br>   -q, --quiet           do not print totals output
-<br>   -o, --csvout          sends parsed data to a csvfile. -p can be used or omitted with -o
-<br>   --createdb            Drop database and create a new one.
+<br>  --version             display version number
+<br>  -f FILE, --file FILE  *REQUIRED* filename of the utility provided csv kwh file
+<br>  -v, --verbose         verbose output - send copy of each line to stdout
+<br>  -q, --quiet           do not print totals output
+<br>  -c, --csv             sends parsed data to a csv delimited file
+<br>  -j, --json            sends parsed data to a json file
+<br>  --createdb            Drop database and create a new one
+<br>  --nodb                Will NOT import to influxdb. Use with -o for local file only
 
 ## Output of program 
-The following three values are the output:<br>
+The following four values are the output:<br>
 <br><b>measurement --</b> Either delivered (power from the utility)  or generated (solar power sent to the utility)
+<br><b>month --</b> Name value of Month for influxql grouping
 <br><b>time --</b> Converted based on the time zone parameter, format is YYYY-MM-DD HH:MM:SS
 <br><b>value --</b>  Kilo Watt Hours - decimal precision is based on what the raw utility file is
 

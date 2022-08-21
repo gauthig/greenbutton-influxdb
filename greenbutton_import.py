@@ -79,6 +79,8 @@ def parse_data(input_file, verbose):
                 dt_local = datetime.strptime(sce_timestamp[0], dt_format)
                 dt_utc = dt_local.astimezone(pytz.UTC)
                 dt_utc = dt_utc.strftime("%Y-%m-%d %H:%M:%S")
+                # use local time instead of UTC as you want customer month
+                dt_month = dt_local.strftime('%B')
                 if tag == 'generated':
                     rows_generated = rows_generated + 1
                     pmult = -1
@@ -89,7 +91,8 @@ def parse_data(input_file, verbose):
                 point = {
                     "measurement": "SCE",
                     "tags": {
-                        "type": tag
+                        "type": tag,
+                        "month": dt_month
                     },
                     "time": dt_utc,
                     "fields": {
@@ -104,28 +107,36 @@ def parse_data(input_file, verbose):
     return (rows_delivered, rows_generated)
 
 
-def writedata():
+def write_csv():
     textout = ''
     current_date = datetime.now()
     fileout = 'energy' + str(int(current_date.strftime('%Y%m%d%H%M'))) + '.csv'
-
-    #Influxformat
     with open(fileout, 'w', encoding='UTF-8') as f:
-        csv_columns = 'measurement,time,value'
-
-        #writer = csv.writer(f)
+        csv_columns = 'measurement,month,time,value'
         f.write(csv_columns)
-
         for data in metricsout:
             textout = '\n' + json.dumps(data)
             textout = textout.replace(
                 '{"measurement": "SCE", "tags": {"type": "', '')
             textout = textout.replace('"}, "time": "', ',')
             textout = textout.replace('", "fields": {"value":', ',')
+            textout = textout.replace('"month": "','')
+            textout = textout.replace('", ',',')
             textout = textout.replace('}}', '')
             f.write(textout)
+    print('CSV File is: ', fileout)
     return ()
 
+def write_json():
+    textout = ''
+    current_date = datetime.now()
+    fileout = 'energy' + str(int(current_date.strftime('%Y%m%d%H%M'))) + '.json'
+    with open(fileout, 'w', encoding='UTF-8') as f:
+        for data in metricsout:
+            textout = '\n' + json.dumps(data)
+            f.write(textout)
+    print('json File is: ', fileout)
+    return ()
 
 def senddata(hostname, port, user, password,
              dbname, createdb,
@@ -178,19 +189,25 @@ if __name__ == '__main__':
                         help='do not print totals output',
                         action='store_true')
     parser.add_argument(
-        '-o',
-        '--csvout',
-        help=
-        'sends parsed data to a csvfile.  -p can be used or omitted with -o',
+        '-c',
+        '--csv',
+        help='sends parsed data to a csv delimited file',
         action='store_true')
-    parser.add_argument('--createdb',
-                        action='store_true',
-                        default=False,
-                        help='Drop database and create a new one.')
+    parser.add_argument(
+        '-j',
+        '--json',
+        help='sends parsed data to a json file',
+        action='store_true')
+    parser.add_argument(
+        '--createdb',
+        action='store_true',
+        default=False,
+        help='Drop database and create a new one')
     parser.add_argument(
         '--nodb',
-        help=
-        'Will import to influxdb. Use with -o for local file only'
+        action='store_true',
+        default='False',
+        help='Will NOT import to influxdb. Use with -o for local file only'
     )
     args = parser.parse_args()
 
@@ -203,8 +220,11 @@ if __name__ == '__main__':
 
     (delivered, generated) = parse_data(args.file, args.verbose)
 
-    if args.csvout:
-        writedata()
+    if args.csv:
+        write_csv()
+
+    if args.json:
+        write_json()
 
     if not args.nodb:
         senddata(config['host'], config['port'], config['user'],
