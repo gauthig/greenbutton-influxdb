@@ -11,27 +11,27 @@ Please help improve documentation with your inputs to our READMEs, examples, and
 #### Bugs :beetle:
 
 **Before submitting a bug report:**
-* Ensure the bug was not already reported by searching for [existing issues in pfELK](https://github.com/gauthig/sce-greenbutton/issues)
+* Ensure the bug was not already reported by searching for [existing issues in pfELK](https://github.com/gauthig/greenbutton-influxdb/issues)
   * If an issue is already open, comment to that issue and provide any additional details, to assist.
 * Check the [FAQs](#) for common questions and problems 
 
-Bugs and issues are tracked as [GitHub Issues](https://github.com/gauthig/sce-greenbutton/issues).
+Bugs and issues are tracked as [GitHub Issues](https://github.com/gauthig/greenbutton-influxdb/issues).
 **Please follow these guidelines when submitting a bug request:**
 * Ensure the title captures the subject of the issue
 * Describe the exact procedures in replicating the issue(s)
 * Explain the issue(s)
 * Provide details about your environment and sample input/output
-* Fill out the [Issue Template](https://github.com/gauthig/sce-greenbutton/issues/new/choose) 
+* Fill out the [Issue Template](https://github.com/gauthig/greenbutton-influxdb/issues/new/choose) 
 * Label the issue as a bug
 
 #### Feature Requests :sparkles:
 
-Feature requests are tracked as [GitHub Issues](https://github.com/gauthig/sce-greenbutton/issues).
+Feature requests are tracked as [GitHub Issues](https://github.com/gauthig/greenbutton-influxdb/issues).
 **Please follow these guidelines when submitting a feature request:**
 * Ensure the title captures the subject of the requested feature
 * Describe the feature in as much detail as possible
 * Provide examples to help us understand the requested feature(s)
-* Follow the directions in the [issue template](https://github.com/gauthig/sce-greenbutton/issuess/new/choose)
+* Follow the directions in the [issue template](https://github.com/gauthig/greenbutton-influxdb/issuess/new/choose)
 * Label the issue as a Enhancement
 
 #### Pull Requests 

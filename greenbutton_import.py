@@ -29,23 +29,16 @@ __status__ = 'Production'
 __status__ = 'Production'
 
 from influxdb import InfluxDBClient
-from influxdb.exceptions import InfluxDBClientError
+#from influxdb.exceptions import InfluxDBClientError
 from datetime import datetime
 import sys
 import csv
-import time
+#import time
 import argparse
 import json
 import pytz
 
-prevarg = ''
-influx_url = ''
-input_file = ''
-csvfileout = ''
-dry_run = 'false'
-verbose = 'false'
-silent_run = 'false'
-writer = ''
+
 metricsout = []
 
 
@@ -108,7 +101,6 @@ def parse_data(input_file, verbose):
 
                 if verbose:
                     print(point)
-
     return (rows_delivered, rows_generated)
 
 
@@ -132,13 +124,11 @@ def writedata():
             textout = textout.replace('", "fields": {"value":', ',')
             textout = textout.replace('}}', '')
             f.write(textout)
-            print(textout)
-
     return ()
 
 
 def senddata(hostname, port, user, password,
-             dbname, batchsize, timezone, createdb,
+             dbname, createdb,
             ):
 
     client = InfluxDBClient(hostname, port, user, password, dbname)
@@ -151,7 +141,7 @@ def senddata(hostname, port, user, password,
 
     if len(metricsout) > 0:
         client.switch_user(user, password)
-        response = client.write_points(metricsout, batchsize)
+        response = client.write_points(metricsout, time_precision='m')
     if args.verbose:
         print('influxdb response', response)
     return ()
@@ -166,8 +156,10 @@ if __name__ == '__main__':
     print('Influx Port:', config['port'])
 
     parser = \
-        argparse.ArgumentParser(description='Loads Green Button csv file and send formated results to influxdb.Used for Net Metering format only (solar)'
-                                )
+        argparse.ArgumentParser(description="""Loads Green Button csv file
+        and send formated results to influxdb. 
+        Used for Net Metering format only (solar)"""
+                               )
     parser.add_argument('--version',
                         help='display version number',
                         action='store_true')
@@ -209,19 +201,17 @@ if __name__ == '__main__':
     if args.verbose:
         print('Parsed arguments')
 
-    (rows_delivered, rows_generated) = parse_data(args.file, args.verbose)
+    (delivered, generated) = parse_data(args.file, args.verbose)
 
     if args.csvout:
         writedata()
 
     if not args.nodb:
         senddata(config['host'], config['port'], config['user'],
-                 config['password'], config['dbname'], config['batchsize'],
-                 config['timezone'], args.createdb)
+                 config['password'], config['dbname'], args.createdb)
 
     if not args.quiet:
         print('Import Complete')
-        print('Energy Delivered rows ', rows_delivered)
-        print('Energy Generated rows ', rows_generated)
-
-exit()
+        print('Energy Delivered rows ', delivered)
+        print('Energy Generated rows ', generated)
+sys.exit()

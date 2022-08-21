@@ -4,13 +4,15 @@ Parse SCE Green Button download files only for now.
 If someone provides sample data for other green button formats (including SCE non Net Metering) I will incorporate.  
 
 Looking for contributors for other utility formats, code enhancements, bugs, documentation ....
-If you would like to contribute anything including just identifying enhancements or bugs, please see the [contributor guide](https://github.com/gauthig/sce-greenbutton/blob/main/documentation/contributing.md)
+If you would like to contribute anything including just identifying enhancements or bugs, please see the [contributor guide](https://github.com/gauthig/greenbutton-influxdb/blob/main/documentation/contributing.md)
 
 ## Still in progress - here is what is completed and works
 
 Features
 - [X] Parse SCE NetMetering version of Green Button CSV file - Solar
-- [ ] Parse SCE non-Netmetering version of Green Button CSV file - Normal Residential Customers without solar
+ File is grouped by day by Received (Sent to Utility) or Delivered (from Utiliy)
+- [X] Parse SCE non-Netmetering version of Green Button CSV file - Normal Residential Customers without solar
+ File is group by day and has Consumed header tag
 - [X] Send data to influxdb (v1, non-ssl) - should be on private network and not public accessible due to no SSL
 - [ ] Grafana dashboard to analyze Energy Delivery and Generation
 - [X] Create formatted text file for use in other programs (Formatted for Influxdb)
@@ -56,6 +58,6 @@ The following three values are the output:<br>
 
 ## References ##
 - FAQ's and general information is in the Wiki
-- How to [contribute and create issues](https://github.com/gauthig/sce-greenbutton/blob/main/documentation/contributing.md)
+- How to [contribute and create issues](https://github.com/gauthig/greenbutton-influxdb/blob/main/documentation/contributing.md)
 
 
