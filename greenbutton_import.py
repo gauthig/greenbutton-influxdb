@@ -51,7 +51,10 @@ def parse_data(input_file, verbose):
     if verbose:
         print('Starting parse_data')
 
+
+
     point = []
+    tag_values = []
     rows_generated = 0
     rows_delivered = 0
     tag = ''
@@ -89,7 +92,7 @@ def parse_data(input_file, verbose):
                     pmult = 1
 
                 point = {
-                    "measurement": "SCE",
+                    "measurement": "kwhrs",
                     "tags": {
                         "type": tag,
                         "month": dt_month
@@ -100,10 +103,12 @@ def parse_data(input_file, verbose):
                     }
                 }
 
-                metricsout.append(point)
-
+                
                 if verbose:
                     print(point)
+
+                metricsout.append(point)
+
     return (rows_delivered, rows_generated)
 
 
@@ -138,9 +143,10 @@ def write_json():
     print('json File is: ', fileout)
     return ()
 
-def senddata(hostname, port, user, password,
-             dbname, createdb,
-            ):
+
+
+def send_data(hostname, port, user, password,
+             dbname, createdb):
 
     client = InfluxDBClient(hostname, port, user, password, dbname)
 
@@ -153,18 +159,17 @@ def senddata(hostname, port, user, password,
     if len(metricsout) > 0:
         client.switch_user(user, password)
         response = client.write_points(metricsout, time_precision='m')
+
     if args.verbose:
         print('influxdb response', response)
     return ()
+
 
 if __name__ == '__main__':
     config_filename = 'greenbutton.json'
     config = {}
     with open(config_filename) as configFile:
         config = json.load(configFile)
-
-    print('Influx Host:', config['host'])
-    print('Influx Port:', config['port'])
 
     parser = \
         argparse.ArgumentParser(description="""Loads Green Button csv file
@@ -215,9 +220,6 @@ if __name__ == '__main__':
         print('sceinfluxdb.py - version', __version__)
         sys.exit()
 
-    if args.verbose:
-        print('Parsed arguments')
-
     (delivered, generated) = parse_data(args.file, args.verbose)
 
     if args.csv:
@@ -226,9 +228,13 @@ if __name__ == '__main__':
     if args.json:
         write_json()
 
-    if not args.nodb:
-        senddata(config['host'], config['port'], config['user'],
-                 config['password'], config['dbname'], args.createdb)
+    #if not args.nodb:
+    send_data(config['host'], config['port'], config['user'],
+             config['password'], config['dbname'], args.createdb)
+
+    if args.verbose:
+        print('Influx Host:', config['host'])
+        print('Influx Port:', config['port'])
 
     if not args.quiet:
         print('Import Complete')
