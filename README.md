@@ -64,4 +64,6 @@ The following four values are the output:<br>
 - FAQ's and general information is in the Wiki
 - How to [contribute and create issues](https://github.com/gauthig/greenbutton-influxdb/blob/main/documentation/contributing.md)
 
+## Grafana Dashboard included
+<img src="https://github.com/gauthig/greenbutton-influxdb/blob/main/images/Grafana_dashboard.jpeg" alt="Sample Grafana Dashboard" title="Green Button Grafana Dashboard">
 
