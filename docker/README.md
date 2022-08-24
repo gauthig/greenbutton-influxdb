@@ -17,16 +17,18 @@ Multi-container Docker app built from the following services:
 ## Start up
 
 # First Time 
-
-- docker-compose up
-
+```
+docker-compose up
+```
 - Watch to make sure no errors
 - Bring up a browser and go to http://yourhost:3000
 - Sign in with the creditionals in the docker-compose.yml and .env files
 - Shut down docker by ctrl-c in the terminal it is running.
 
 # Ongoing
-- docker-compose up -d
+```
+docker-compose up -d
+```
 <br>For your test environment this is fine and docker will not restart each time you reboot.
 <br>To make it influxdb/grafana perstiant on a server, uncomment the two (2) lines in <b>docker-compose.yml<b>
 - #restart: always
@@ -67,5 +69,4 @@ The app creates the following named volumes (one for each service) so data is no
 - Do not put you domain our server name in as it's within the docker network and must match the docker name.
 - Enter the user credtials you setup in docker-compose.yml
 - setupt the database name and energy or if you created a new oone use that name
-<br>
-- Dashbaord, import json from this github repo called dashbaord.json
+- Dasboard, import json from this github repo called dashboard.json
