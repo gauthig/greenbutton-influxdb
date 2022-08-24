@@ -14,7 +14,7 @@ Features
 - [X] Parse SCE non-Netmetering version of Green Button CSV file - Normal Residential Customers without solar
  File is group by day and has Consumed header tag
 - [X] Send data to influxdb (v1, non-ssl) - should be on private network and not public accessible due to no SSL
-- [ ] Grafana dashboard to analyze Energy Delivery and Generation
+- [X] Grafana dashboard to analyze Energy Delivery and Generation
 - [X] Simple parsed CSV file for use in excel, manual influxdb or other database
 - [X] JSON file output format. One closed xml line for each measuremnt
 - [ ] SSL support
