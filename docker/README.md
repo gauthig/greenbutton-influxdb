@@ -29,11 +29,12 @@ docker-compose up
 ```
 docker-compose up -d
 ```
-<br>For your test environment this is fine and docker will not restart each time you reboot.
-<br>To make it influxdb/grafana perstiant on a server, uncomment the two (2) lines in <b>docker-compose.yml<b>
-- #restart: always
-
-To stop the Influxdb/grafana
+- For your test environment this is fine and docker will not restart each time you reboot.
+- To make influxdb/grafana perstiant on a server (restart on reboots), uncomment the two (2) lines in <b>docker-compose.yml<b>
+```
+  #restart: always
+```
+- To stop the Influxdb/grafana
 
 ```
 docker-compose down
