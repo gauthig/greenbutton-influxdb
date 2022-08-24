@@ -1,3 +1,7 @@
+## Grafana Dashboard Sample
+<img src="https://github.com/gauthig/greenbutton-influxdb/blob/main/images/Grafana_dashboard.jpeg" alt="Sample Grafana Dashboard" title="Green Button Grafana Dashboard">
+
+
 # Green button import to Influxdb
 Parse SCE Green Button download files only for now. 
 <br>Green button data from utilities is not always the same format so this is tuned to SCE's net metering format.  Yes, Even SCE has several formats based on customer plan.
@@ -64,6 +68,4 @@ The following four values are the output:<br>
 - FAQ's and general information is in the Wiki
 - How to [contribute and create issues](https://github.com/gauthig/greenbutton-influxdb/blob/main/documentation/contributing.md)
 
-## Grafana Dashboard included
-<img src="https://github.com/gauthig/greenbutton-influxdb/blob/main/images/Grafana_dashboard.jpeg" alt="Sample Grafana Dashboard" title="Green Button Grafana Dashboard">
 
