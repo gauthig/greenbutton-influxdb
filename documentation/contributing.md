@@ -49,6 +49,7 @@ Feature requests are tracked as [GitHub Issues](https://github.com/gauthig/green
 * Code should be ran through pylint for style guide compliance, dead objects and other coding issues
 * A pylint rc file is provided in the repository
 * pylint usage (must be installed first for your environment)
-<br>pylint --rcfile=pylintrc greenbutton_import.py
-
+```
+pylint --rcfile=pylintrc greenbutton_import.py
+```
 
