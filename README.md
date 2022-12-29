@@ -4,7 +4,7 @@
 
 # Green button import to Influxdb
 Parse SCE Green Button download files only for now. 
-<br>Green button data from utilities is not always the same format so this is tuned to SCE's net metering format.  Yes, Even SCE has several formats based on customer plan.
+<br>Green button data from utilities is not always the same format , two utilities rae now inlcuded.
 If someone provides sample data for other green button formats (including SCE non Net Metering) I will incorporate.  
 
 Looking for contributors for other utility formats, code enhancements, bugs, documentation ....
@@ -15,7 +15,9 @@ If you would like to contribute anything including just identifying enhancements
 Features
 - [X] Parse SCE NetMetering version of Green Button CSV file - Solar
  File is grouped by day by Received (Sent to Utility) or Delivered (from Utiliy)
-- [X] Parse SCE non-Netmetering version of Green Button CSV file - Normal Residential Customers without solar
+- [X] Provide feature to load different utility formats 
+-       SCE (Southern Cal.) Time of use / Net Metering , Pepco (Maryland)
+- [ ] Parse SCE non-Netmetering version of Green Button CSV file - Normal Residential Customers without solar
  File is group by day and has Consumed header tag
 - [X] Send data to influxdb (v1, non-ssl) - should be on private network and not public accessible due to no SSL
 - [X] Grafana dashboard to analyze Energy Delivery and Generation

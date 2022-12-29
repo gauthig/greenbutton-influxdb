@@ -1,11 +1,12 @@
 {
-        "host": "127.0.0.1",
+        "util_format": "sce-tou",
+        "host": "influxdbv1.mydomain.org",
         "port": 8086,
-        "user": "admin",
-        "password": "testadmin",
+        "user": "test",
+        "password": "test",
         "dbname": "energy",
         "ssl_enable": false,
         "ssl_verify": false,
-	"timezone": "America/Los_Angeles",
+        "influx_ver": "V1",
         "batchsize": 10000
  }

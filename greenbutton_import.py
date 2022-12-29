@@ -13,6 +13,7 @@
 # Input - SCE Green Data (TOU Style)
 # Output - Inluxdb mesurements  (V1)
 #
+# utilparse.py must be in same directory as this program
 
 __author__ = 'Garrett Gauthier'
 __copyright__ = 'Copyright 2022, Garrett Gauthier'
@@ -20,8 +21,8 @@ __author__ = 'Garrett Gauthier'
 __copyright__ = 'Copyright 2022, Garrett Gauthier'
 __credits__ = ['Garrett Gauthier', 'Others soon?']
 __license__ = 'GPL'
-__version__ = '1.1'
-__versiondate__ = '08/18/2022'
+__version__ = '1.5'
+__versiondate__ = '12/29/2022'
 __maintainer__ = 'gauthig@github'
 __github__ = 'https://github.com/gauthig/scegreenbutton'
 __email__ = 'garrett-g@outlook.com'
@@ -37,6 +38,7 @@ import csv
 import argparse
 import json
 import pytz
+from utilparse import parse_data
 
 
 metricsout = []
@@ -46,70 +48,6 @@ def get_config_value(key, default_value):
     if key in config:
         return config[key]
     return default_value
-
-def parse_data(input_file, verbose):
-    if verbose:
-        print('Starting parse_data')
-
-
-
-    point = []
-    tag_values = []
-    rows_generated = 0
-    rows_delivered = 0
-    tag = ''
-    pmult = 0
-    dt_format = '%Y-%m-%d %H:%M:%S'
-    infile = open(input_file, mode='r')
-    csv_reader = csv.reader(infile, delimiter=',')
-    if verbose:
-        print('File: ', infile)
-
-    for row in csv_reader:
-        if len(row) > 0:
-            if 'Received' in row[0]:
-                tag = 'generated'
-            elif 'Delivered' in row[0]:
-                tag = 'delivered'
-            elif 'Consumption' in row[0]:
-                tag = 'delivered'
-            elif 'to' in row[0]:
-                sce_timestamp = row[0].split('to')
-                # SCE adds non-ASCII charter before the to field, need to strip
-                sce_timestamp = [
-                    item.replace('\xa0', '') for item in sce_timestamp
-                ]
-                dt_local = datetime.strptime(sce_timestamp[0], dt_format)
-                dt_utc = dt_local.astimezone(pytz.UTC)
-                dt_utc = dt_utc.strftime("%Y-%m-%d %H:%M:%S")
-                # use local time instead of UTC as you want customer month
-                dt_month = dt_local.strftime('%B')
-                if tag == 'generated':
-                    rows_generated = rows_generated + 1
-                    pmult = -1
-                elif tag == 'delivered':
-                    rows_delivered = rows_delivered + 1
-                    pmult = 1
-
-                point = {
-                    "measurement": "kwhrs",
-                    "tags": {
-                        "type": tag,
-                        "month": dt_month
-                    },
-                    "time": dt_utc,
-                    "fields": {
-                        "value": float(row[1]) * pmult
-                    }
-                }
-
-                
-                if verbose:
-                    print(point)
-
-                metricsout.append(point)
-
-    return (rows_delivered, rows_generated)
 
 
 def write_csv():
@@ -173,9 +111,7 @@ if __name__ == '__main__':
 
     parser = \
         argparse.ArgumentParser(description="""Loads Green Button csv file
-        and send formated results to influxdb. 
-        Used for Net Metering format only (solar)"""
-                               )
+        and send formated results to influxdb. """ )
     parser.add_argument('--version',
                         help='display version number',
                         action='store_true')
@@ -216,11 +152,18 @@ if __name__ == '__main__':
     )
     args = parser.parse_args()
 
-    if args.version:
-        print('sceinfluxdb.py - version', __version__)
+    if config['util_format'] not in ('sce-tou','pep'):
+        print('\n*** json file error ***')
+        print('Only valid Utility formats are: sce-tou, pep.')
+        print('Current json value for util_format is ', config['util_format'])
+        print('Change util_format or create an enhancement request in github to create a new utility format')
         sys.exit()
 
-    (delivered, generated) = parse_data(args.file, args.verbose)
+    if args.version:
+        print('sceinfluxdb.py - version', __version__)
+        sys.exit(-1)
+
+    (delivered, generated, metricsout) = parse_data(args.file, args.verbose, config['util_format'], metricsout)
 
     if args.csv:
         write_csv()
