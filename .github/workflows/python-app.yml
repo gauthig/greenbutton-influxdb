@@ -1,40 +1,69 @@
 # This workflow will install Python dependencies, run tests and lint with a single version of Python
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
 
-name: greenbutton-influxdb
+
+name: 'ghascompliance'
+description: 'ghascompliance'
+
+inputs:
+  severity:
+    description: 'Severity Level'
+    default: error
+
+  repository:
+    description: Repository owner and repo name
+    default: ${{ github.repository }}
+
+  token:
+    description: GitHub Personal Access Token
+    default: ${{ github.token }}
+  
+  ref:
+    description: GitHub Ref
+    default: ${{ github.ref }}
+
+  action:
+    description: 'Action to take upon discovery of security issues hitting threshold'
+    default: break
+
+  policy:
+    description: Policy as Code repository owner/repo name
+
+  policy-path:
+    description: Policy as Code file path (including path in repo)
+
+  policy-branch:
+    description: Policy as Code branch
+    default: main
 
 
-on:
-  push:
-    branches: [ $default-branch ]
-  pull_request:
-    branches: [ $default-branch ]
+  argvs:
+    description: 'Additional Arguments'
 
-permissions:
-  contents: read
 
-jobs:
-  build:
-
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v3
-    - name: Set up Python 3.10
-      uses: actions/setup-python@v3
-      with:
-        python-version: "3.10"
-    - name: Install dependencies
+runs:
+  using: "composite"
+  steps:
+    - shell: bash
       run: |
-        python -m pip install --upgrade pip
-        pip install flake8 pytest
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-    - name: Lint with flake8
+        echo "::group::Installing Dependencies"
+        pushd ${{ github.action_path }}
+        python3 -m pip install pipenv && python3 -m pipenv install --system
+        popd
+        echo "::endgroup::"
+    - shell: bash
       run: |
-        # stop the build if there are Python syntax errors or undefined names
-        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-    - name: Test with pytest
-      run: |
-        pytest
+        echo "::error ::This Action has been moved to `advanced-security/policy-as-code`"
+        echo "::error ::The Action is pinned to 1.7.0 and will no longer receive any updates going forward"
+
+        PYTHONPATH=${{ github.action_path }} && export PYTHONPATH=${{ github.action_path }}
+        python3 -m ghascompliance \
+          --severity "${{ inputs.severity }}" \
+          --action "${{ inputs.action }}" \
+          --github-token "${{ inputs.token }}" \
+          --github-repository "${{ inputs.repository }}" \
+          --github-ref "${{ inputs.ref }}" \
+          --github-policy "${{ inputs.policy }}" \
+          --github-policy-path "${{ inputs.policy-path }}" \
+          --github-policy-branch "${{ inputs.policy-branch }}" \
+          ${{ inputs.argvs }}
