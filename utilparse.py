@@ -1,22 +1,18 @@
-
 #utilparse.py
 #module to parse all metrics based on utility format
 #Notes
 #  UNIX timestamp for influxdb converted to UTC - grafana will convert back to local
 #  tags are using local (input file) time zone
-#  
+#
 #  Interval times are end times only, start is assumed in a timebased database
 
 from datetime import datetime
-import sys
 import csv
 import pytz
 import re
 
 rows_generated = 0
 rows_delivered = 0
-
-pmult = 0
 
 def parse_data(input_file, verbose, util_format, metricsout):
     if verbose:
@@ -35,10 +31,9 @@ def parse_data(input_file, verbose, util_format, metricsout):
 
 
 def sce_tou_parse(csv_reader, verbose, metricsout):
-    global rows_generated 
-    global rows_delivered 
+    global rows_generated
+    global rows_delivered
     point = []
-    tag_values = []
     tag = ''
     pmult = 0
 
@@ -60,14 +55,14 @@ def sce_tou_parse(csv_reader, verbose, metricsout):
                 dt_utc = dt_local.astimezone(pytz.UTC)
                 dt_utc = dt_utc.strftime("%Y-%m-%d %H:%M:%S")
                 # use local time instead of UTC as you want customer month
-                dt_month = dt_local.strftime('%B')
-                if tag == 'generated':
-                    rows_generated = rows_generated + 1
-                    pmult = -1
-                elif tag == 'delivered':
-                    rows_delivered = rows_delivered + 1
-                    pmult = 1
-                if float(row[1]) != 0 :
+                if float(row[1]) != 0:
+                    if tag == 'generated':
+                        rows_generated = rows_generated + 1
+                        pmult = -1
+                    elif tag == 'delivered':
+                        rows_delivered = rows_delivered + 1
+                        pmult = 1
+        
                     point = {
                         "measurement": "energy",
                         "tags": {
@@ -80,43 +75,41 @@ def sce_tou_parse(csv_reader, verbose, metricsout):
                         "fields": {
                             "kwh": float(row[1]) * pmult
                         }
-                }
-           
+                    }
+
                 if verbose:
                     print(point)
 
                 metricsout.append(point)
 
 def pep_parse(csv_reader, verbose, metricsout):
-    global rows_generated 
-    global rows_delivered 
+    global rows_generated
+    global rows_delivered
     point = []
-    tag_values = []
     tag = ''
-    pmult = 0
 
     for row in csv_reader:
         if len(row) > 0:
             if 'Electric usage' in row[0]:
-                if float(row[4]) < 0 :
+                if float(row[4]) < 0:
                     tag = 'generated'
-                else : 
+                else:
                     tag = 'delivered'
-            
+
                 util_timestamp = row[1]
                 util_timestamp = str(util_timestamp) + ' ' + str(row[3]) + str(':00')
-                dt_local = datetime.strptime(util_timestamp ,"%Y-%m-%d %H:%M:%S")
+                dt_local = datetime.strptime(util_timestamp, "%Y-%m-%d %H:%M:%S")
                 dt_utc = dt_local.astimezone(pytz.UTC)
                 dt_utc = dt_utc.strftime("%Y-%m-%d %H:%M:%S")
                 # use local time instead of UTC as you want customer month
-            
+
                 if tag == 'generated':
                     rows_generated = rows_generated + 1
-                    cost = float(re.sub(r'[^0-9]', '', row[6]))/-100 
+                    cost = float(re.sub(r'[^0-9]', '', row[6]))/-100
                 elif tag == 'delivered':
                     rows_delivered = rows_delivered + 1
-                    cost = float(re.sub(r'[^0-9]', '', row[6]))/100 
-        
+                    cost = float(re.sub(r'[^0-9]', '', row[6]))/100
+
                 point = {
                     "measurement": "energy",
                     "tags": {
