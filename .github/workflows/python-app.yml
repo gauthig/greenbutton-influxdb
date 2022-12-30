@@ -1,6 +1,6 @@
 51 lines (47 sloc)  1.62 KB
 
-name: Python application
+name: greenbutton-influcdb
 
 on: [push, pull_request]
 
