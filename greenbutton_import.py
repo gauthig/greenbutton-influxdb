@@ -33,11 +33,9 @@ from influxdb import InfluxDBClient
 #from influxdb.exceptions import InfluxDBClientError
 from datetime import datetime
 import sys
-import csv
 #import time
 import argparse
 import json
-import pytz
 from utilparse import parse_data
 
 
@@ -63,8 +61,8 @@ def write_csv():
                 '{"measurement": "SCE", "tags": {"type": "', '')
             textout = textout.replace('"}, "time": "', ',')
             textout = textout.replace('", "fields": {"value":', ',')
-            textout = textout.replace('"month": "','')
-            textout = textout.replace('", ',',')
+            textout = textout.replace('"month":"', '')
+            textout = textout.replace('", ', ',')
             textout = textout.replace('}}', '')
             f.write(textout)
     print('CSV File is: ', fileout)
@@ -84,7 +82,7 @@ def write_json():
 
 
 def send_data(hostname, port, user, password,
-             dbname, createdb):
+              dbname, createdb):
 
     client = InfluxDBClient(hostname, port, user, password, dbname)
 
@@ -111,7 +109,7 @@ if __name__ == '__main__':
 
     parser = \
         argparse.ArgumentParser(description="""Loads Green Button csv file
-        and send formated results to influxdb. """ )
+        and send formated results to influxdb. """)
     parser.add_argument('--version',
                         help='display version number',
                         action='store_true')
@@ -152,18 +150,20 @@ if __name__ == '__main__':
     )
     args = parser.parse_args()
 
-    if config['util_format'] not in ('sce-tou','pep'):
+    if config['util_format'] not in ('sce-tou', 'pep'):
         print('\n*** json file error ***')
         print('Only valid Utility formats are: sce-tou, pep.')
-        print('Current json value for util_format is ', config['util_format'])
-        print('Change util_format or create an enhancement request in github to create a new utility format')
+        print('Current json value for util_format is ',
+              config['util_format'])
+        print('Change util_format or create an enhancement request')
         sys.exit()
 
     if args.version:
         print('sceinfluxdb.py - version', __version__)
         sys.exit(-1)
 
-    (delivered, generated, metricsout) = parse_data(args.file, args.verbose, config['util_format'], metricsout)
+    (delivered, generated, metricsout) = parse_data(args.file, args.verbose,
+                                                    config['util_format'], metricsout)
 
     if args.csv:
         write_csv()
@@ -173,7 +173,7 @@ if __name__ == '__main__':
 
     #if not args.nodb:
     send_data(config['host'], config['port'], config['user'],
-             config['password'], config['dbname'], args.createdb)
+              config['password'], config['dbname'], args.createdb)
 
     if args.verbose:
         print('Influx Host:', config['host'])
